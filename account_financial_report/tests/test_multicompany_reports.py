@@ -30,6 +30,10 @@ class TestMultiCompanyReports(AccountTestInvoicingCommon):
                 tracking_disable=True,
             )
         )
+        # AccountTestInvoicingCommon doesn't auto-create a second company;
+        # call setup_other_company() explicitly so cls.company_data_2
+        # (and the standard account fixtures it carries) actually exist.
+        cls.company_data_2 = cls.setup_other_company()
         cls.company_2 = cls.company_data_2["company"]
         cls.env.user.write({"company_ids": [(4, cls.company_2.id)]})
 
