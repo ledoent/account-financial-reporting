@@ -227,7 +227,8 @@ class TrialBalanceReportWizard(models.TransientModel):
                 [
                     ("account_type", "=", "equity_unaffected"),
                     ("company_ids", "in", [record.company_id.id]),
-                ]
+                ],
+                limit=1,
             )
 
     unaffected_earnings_account = fields.Many2one(
