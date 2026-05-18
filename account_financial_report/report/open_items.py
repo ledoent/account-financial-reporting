@@ -253,7 +253,12 @@ class OpenItemsReport(models.AbstractModel):
         account_ids = data["account_ids"]
         partner_ids = data["partner_ids"]
         date_at = data["date_at"]
-        date_at_object = datetime.strptime(date_at, "%Y-%m-%d").date()
+        # data["date_at"] is a string on the qweb render path but a date
+        # object when callers (e.g. tests) pass a wizard Date field directly.
+        if isinstance(date_at, str):
+            date_at_object = datetime.strptime(date_at, "%Y-%m-%d").date()
+        else:
+            date_at_object = date_at
         date_from = data["date_from"]
         only_posted_moves = data["only_posted_moves"]
         show_partner_details = data["show_partner_details"]
