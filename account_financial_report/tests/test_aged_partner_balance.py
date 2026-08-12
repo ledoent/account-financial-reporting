@@ -52,6 +52,23 @@ class TestAgedPartnerBalance(TransactionCase):
             }
         )
 
+    def test_date_at_accepts_date_object(self):
+        """Passing a date object (not a string) must not raise TypeError."""
+        wizard = self.wizard_with_line_details
+        wizard.onchange_type_accounts_only()
+        data = wizard._prepare_report_data()
+        # date_at is already a datetime.date from _prepare_report_data —
+        # do NOT strftime it so the isinstance guard in _get_report_values is
+        # exercised directly.
+        result = test_reports.try_report(
+            self.env.cr,
+            self.env.uid,
+            "account_financial_report.aged_partner_balance",
+            wizard.ids,
+            data=data,
+        )
+        self.assertTrue(result)
+
     def test_report_without_aged_report_configuration(self):
         """Check that report is produced correctly."""
         wizard = self.wizard_with_line_details
