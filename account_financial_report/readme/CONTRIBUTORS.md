@@ -37,3 +37,6 @@
   
 Much of the work in this module was done at a sprint in Sorrento, Italy
 in April 2016.
+
+- [Ledo Enterprises](https://github.com/ledoent):
+  - Don Kendall \<<dkendall@ledoweb.com>\>

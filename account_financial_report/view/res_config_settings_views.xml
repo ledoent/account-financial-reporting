@@ -38,7 +38,7 @@
                                         name="%(account_financial_report.action_aged_partner_report_configuration)d"
                                         string="Configurations"
                                         class="btn-link"
-                                        icon="fa-arrow-right"
+                                        icon="arrow_forward"
                                     />
                                 </div>
                             </div>
