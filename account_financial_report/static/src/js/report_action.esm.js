@@ -1,6 +1,6 @@
 import {ReportAction} from "@web/webclient/actions/reports/report_action";
 import {patch} from "@web/core/utils/patch";
-import {useEnrichWithActionLinks} from "./report.esm";
+import {enrichWithActionLinks} from "./report.esm";
 
 const MODULE_NAME = "account_financial_report";
 
@@ -10,8 +10,16 @@ patch(ReportAction.prototype, {
         this.isAccountFinancialReport = this.props.report_name.startsWith(
             `${MODULE_NAME}.`
         );
+    },
+
+    // 20.0 removed the iframe ref this used to hook onto: the template is now
+    // `<iframe t-on-load="this.onIframeLoaded"/>` with no t-ref, so there is
+    // nothing to track and the enrichment moves onto the load callback, which
+    // already receives the loaded iframe.
+    onIframeLoaded(ev) {
+        super.onIframeLoaded(...arguments);
         if (this.isAccountFinancialReport) {
-            useEnrichWithActionLinks(this.iframe);
+            enrichWithActionLinks(this, ev.currentTarget, null, true);
         }
     },
 
@@ -20,7 +28,6 @@ patch(ReportAction.prototype, {
             type: "ir.actions.report",
             report_type: "xlsx",
             report_name: this._get_xlsx_name(this.props.report_name),
-            report_file: this._get_xlsx_name(this.props.report_file),
             data: this.props.data || {},
             context: this.props.context || {},
             display_name: this.title,

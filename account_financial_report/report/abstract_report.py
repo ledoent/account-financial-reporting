@@ -137,7 +137,8 @@ class AgedPartnerBalanceReport(models.AbstractModel):
                         "code": account.code,
                         "name": account.name,
                         "hide_account": False,
-                        "group_id": account.group_id.id,
+                        # 20.0: account.group is gone, the hierarchy is on the account
+                        "group_id": account.parent_id.id,
                         "currency_id": account.currency_id.id,
                         "currency_name": account.currency_id.name,
                         "centralized": account.centralized,

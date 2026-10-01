@@ -1,5 +1,3 @@
-import {useComponent, useEffect} from "@odoo/owl";
-
 function toTitleCase(str) {
     return str
         .replaceAll(".", " ")
@@ -9,7 +7,15 @@ function toTitleCase(str) {
         );
 }
 
-function enrich(component, targetElement, selector, isIFrame = false) {
+// 20.0 drives this from ReportAction.onIframeLoaded, which hands over the already
+// loaded iframe, so there is no ref to track and no hook left to run: the component
+// and the element are both in hand at call time.
+export function enrichWithActionLinks(
+    component,
+    targetElement,
+    selector = null,
+    isIFrame = false
+) {
     let doc = window.document;
     let contentDocument = targetElement;
 
@@ -54,21 +60,4 @@ function enrich(component, targetElement, selector, isIFrame = false) {
             wrapper.appendChild(element);
         }
     }
-}
-
-export function useEnrichWithActionLinks(ref, selector = null) {
-    const comp = useComponent();
-    useEffect(
-        (element) => {
-            // If we get an iframe, we need to wait until everything is loaded
-            if (element.matches("iframe")) {
-                element.addEventListener("load", () =>
-                    enrich(comp, element, selector, true)
-                );
-            } else {
-                enrich(comp, element, selector);
-            }
-        },
-        () => [ref.el]
-    );
 }

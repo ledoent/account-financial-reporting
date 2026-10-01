@@ -26,13 +26,24 @@ class TestTrialBalanceReport(AccountTestInvoicingCommon):
                 tracking_disable=True,
             )
         )
-        # Remove previous account groups and related invoices to avoid conflicts
-        group_obj = cls.env["account.group"]
-        cls.group1 = group_obj.create({"code_prefix_start": "1", "name": "Group 1"})
-        cls.group11 = group_obj.create(
-            {"code_prefix_start": "11", "name": "Group 11", "parent_id": cls.group1.id}
+        # 20.0 removed account.group: the hierarchy is parent accounts on
+        # account.account, so the nodes are created as accounts and the children
+        # are attached explicitly instead of being matched on a code prefix.
+        cls.group1 = cls._create_account_account(
+            cls, {"code": "1", "name": "Group 1", "account_type": "income_other"}
         )
-        cls.group2 = group_obj.create({"code_prefix_start": "2", "name": "Group 2"})
+        cls.group11 = cls._create_account_account(
+            cls,
+            {
+                "code": "11",
+                "name": "Group 11",
+                "account_type": "income_other",
+                "parent_id": cls.group1.id,
+            },
+        )
+        cls.group2 = cls._create_account_account(
+            cls, {"code": "2", "name": "Group 2", "account_type": "income_other"}
+        )
         # Set accounts
         cls.account001 = cls._create_account_account(
             cls,
@@ -77,6 +88,12 @@ class TestTrialBalanceReport(AccountTestInvoicingCommon):
                 "account_type": "income_other",
             },
         )
+        # Mirrors what the 19.0 code-prefix matching produced: prefix "1" caught
+        # the receivable (101300) and prefix "2" the 2xx income accounts, while
+        # prefix "11" matched nothing — the unaffected-earnings account is 999998.
+        cls.account100.parent_id = cls.group1
+        cls.account200.parent_id = cls.group2
+        cls.account201.parent_id = cls.group2
         cls.previous_fy_date_start = "2015-01-01"
         cls.previous_fy_date_end = "2015-12-31"
         cls.fy_date_start = "2016-01-01"
