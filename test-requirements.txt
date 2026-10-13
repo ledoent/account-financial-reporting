@@ -1,0 +1,3 @@
+# DO NOT MERGE — temporary pins until the 20.0 ports land and wheels ship.
+odoo-addon-date_range @ git+https://github.com/ledoent/server-ux.git@20.0-mig-date_range#subdirectory=date_range
+odoo-addon-report_xlsx @ git+https://github.com/ledoent/reporting-engine.git@20.0-mig-report_xlsx#subdirectory=report_xlsx
