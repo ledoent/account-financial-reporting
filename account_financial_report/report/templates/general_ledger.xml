@@ -42,18 +42,16 @@
                     <t t-if="'list_grouped' not in account">
                         <!-- Display account move lines without partner regroup -->
                         <t t-set="type" t-value='"account_type"' />
+                        <t t-set="account_or_group_item_object" t-value="account" />
                         <t
                             t-call="account_financial_report.report_general_ledger_lines"
-                        >
-                            <t t-set="account_or_group_item_object" t-value="account" />
-                        </t>
+                        />
                         <!-- Display account footer -->
+                        <t t-set="account_or_group_item_object" t-value="account" />
+                        <t t-set="type" t-value='"account_type"' />
                         <t
                             t-call="account_financial_report.report_general_ledger_ending_cumul"
-                        >
-                            <t t-set="account_or_group_item_object" t-value="account" />
-                            <t t-set="type" t-value='"account_type"' />
-                        </t>
+                        />
                     </t>
                     <t t-if="'list_grouped' in account">
                         <!-- Display account partners -->
@@ -66,36 +64,30 @@
                                 </div>
                                 <!-- Display partner move lines -->
                                 <t
+                                    t-set="account_or_group_item_object"
+                                    t-value="group_item"
+                                />
+                                <t
                                     t-call="account_financial_report.report_general_ledger_lines"
-                                >
-                                    <t
-                                        t-set="account_or_group_item_object"
-                                        t-value="group_item"
-                                    />
-                                </t>
+                                />
                                 <!-- Display partner footer -->
                                 <t
+                                    t-set="account_or_group_item_object"
+                                    t-value="group_item"
+                                />
+                                <t t-set="type" t-value='"grouped_type"' />
+                                <t
                                     t-call="account_financial_report.report_general_ledger_ending_cumul"
-                                >
-                                    <t
-                                        t-set="account_or_group_item_object"
-                                        t-value="group_item"
-                                    />
-                                    <t t-set="type" t-value='"grouped_type"' />
-                                </t>
+                                />
                             </div>
                         </t>
                         <!-- Display account footer -->
                         <t t-if="not filter_partner_ids">
+                            <t t-set="account_or_group_item_object" t-value="account" />
+                            <t t-set="type" t-value='"account_type"' />
                             <t
                                 t-call="account_financial_report.report_general_ledger_ending_cumul"
-                            >
-                                <t
-                                    t-set="account_or_group_item_object"
-                                    t-value="account"
-                                />
-                                <t t-set="type" t-value='"account_type"' />
-                            </t>
+                            />
                         </t>
                     </t>
                 </div>

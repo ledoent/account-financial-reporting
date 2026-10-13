@@ -73,11 +73,10 @@
                                     t-call="account_financial_report.report_aged_partner_balance_move_lines"
                                 />
                                 <!-- Display partner footer -->
+                                <t t-set="partner_cumul_line" t-value="partner" />
                                 <t
                                     t-call="account_financial_report.report_aged_partner_balance_partner_ending_cumul"
-                                >
-                                    <t t-set="partner_cumul_line" t-value="partner" />
-                                </t>
+                                />
                             </div>
                         </t>
                         <!-- Display account footer -->

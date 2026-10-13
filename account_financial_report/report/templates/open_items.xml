@@ -95,34 +95,32 @@
                                     <t t-if="has_lines">
                                         <!-- Calculate and display subtotal for current partner_id -->
                                         <t
+                                            t-set="currency_id"
+                                            t-value="accounts_data[account_id]['currency_name']"
+                                        />
+                                        <t
+                                            t-set="type"
+                                            t-value="'partner_subtotal_type'"
+                                        />
+                                        <t
                                             t-call="account_financial_report.report_open_items_ending_cumul"
-                                        >
-                                            <t
-                                                t-set="currency_id"
-                                                t-value="accounts_data[account_id]['currency_name']"
-                                            />
-                                            <t
-                                                t-set="type"
-                                                t-value="'partner_subtotal_type'"
-                                            />
-                                        </t>
+                                        />
                                     </t>
                                 </t>
                             </t>
                             <!-- Display account footer -->
                             <t
+                                t-set="account_or_partner_id"
+                                t-value="partners_data[partner_id]"
+                            />
+                            <t
+                                t-set="currency_id"
+                                t-value="accounts_data[account_id]['currency_name']"
+                            />
+                            <t t-set="type" t-value='"partner_type"' />
+                            <t
                                 t-call="account_financial_report.report_open_items_ending_cumul"
-                            >
-                                <t
-                                    t-set="account_or_partner_id"
-                                    t-value="partners_data[partner_id]"
-                                />
-                                <t
-                                    t-set="currency_id"
-                                    t-value="accounts_data[account_id]['currency_name']"
-                                />
-                                <t t-set="type" t-value='"partner_type"' />
-                            </t>
+                            />
                         </t>
                     </t>
                     <div style="page-break-after: always;" />
@@ -178,33 +176,33 @@
                                     </t>
                                 </div>
                                 <t
+                                    t-set="account_or_partner_id"
+                                    t-value="partners_data[partner_id]"
+                                />
+                                <t
+                                    t-set="currency_id"
+                                    t-value="accounts_data[account_id]['currency_name']"
+                                />
+                                <t t-set="type" t-value='"partner_type"' />
+                                <t
                                     t-call="account_financial_report.report_open_items_ending_cumul"
-                                >
-                                    <t
-                                        t-set="account_or_partner_id"
-                                        t-value="partners_data[partner_id]"
-                                    />
-                                    <t
-                                        t-set="currency_id"
-                                        t-value="accounts_data[account_id]['currency_name']"
-                                    />
-                                    <t t-set="type" t-value='"partner_type"' />
-                                </t>
+                                />
                             </t>
                         </div>
                     </t>
                     <!-- Display account footer -->
-                    <t t-call="account_financial_report.report_open_items_ending_cumul">
-                        <t
-                            t-set="account_or_partner_id"
-                            t-value="accounts_data[account_id]"
-                        />
-                        <t
-                            t-set="currency_id"
-                            t-value="accounts_data[account_id]['currency_name']"
-                        />
-                        <t t-set="type" t-value='"account_type"' />
-                    </t>
+                    <t
+                        t-set="account_or_partner_id"
+                        t-value="accounts_data[account_id]"
+                    />
+                    <t
+                        t-set="currency_id"
+                        t-value="accounts_data[account_id]['currency_name']"
+                    />
+                    <t t-set="type" t-value='"account_type"' />
+                    <t
+                        t-call="account_financial_report.report_open_items_ending_cumul"
+                    />
                 </t>
             </t>
         </div>
