@@ -1,27 +1,33 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-inherit="mis_builder.MisReportWidget" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('oe_mis_builder_content')]" position="attributes">
             <attribute
                 name="t-attf-class"
-            >{{state.mis_report_data.split_matrices and 'horizontal'}}</attribute>
+            >{{this.state.mis_report_data.split_matrices and 'horizontal'}}</attribute>
         </xpath>
         <xpath expr="//table[hasclass('mis_builder')]/.." position="attributes">
             <attribute
                 name="t-foreach"
-            >state.mis_report_data.split_matrices or [state.mis_report_data]</attribute>
+            >this.state.mis_report_data.split_matrices or [this.state.mis_report_data]</attribute>
             <attribute name="t-as">matrix</attribute>
+            <!-- matrix_index is the t-as="matrix" loop extra, i.e. a template
+                 local, so it stays bare. owl3-migration prefixed it with
+                 `this.`, which would resolve on the component and be
+                 undefined. -->
             <attribute name="t-key">matrix_index</attribute>
         </xpath>
 
         <xpath
-            expr="//tr[@t-foreach='state.mis_report_data.header']"
+            expr="//tr[@t-foreach='this.state.mis_report_data.header']"
             position="attributes"
         >
+            <!-- `matrix` is the loop variable from t-as above: template local,
+                 stays bare. -->
             <attribute name="t-foreach">matrix.header</attribute>
         </xpath>
         <xpath
-            expr="//tr[@t-foreach='state.mis_report_data.body']"
+            expr="//tr[@t-foreach='this.state.mis_report_data.body']"
             position="attributes"
         >
             <attribute name="t-foreach">matrix.body</attribute>

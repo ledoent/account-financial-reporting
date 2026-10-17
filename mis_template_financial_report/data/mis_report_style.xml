@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="style_default" model="mis.report.style">
         <field name="name">PL/BS default</field>
