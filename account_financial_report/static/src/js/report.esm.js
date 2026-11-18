@@ -1,0 +1,63 @@
+function toTitleCase(str) {
+    return str
+        .replaceAll(".", " ")
+        .replace(
+            /\w\S*/g,
+            (txt) => `${txt.charAt(0).toUpperCase()}${txt.substr(1).toLowerCase()}`
+        );
+}
+
+// 20.0 drives this from ReportAction.onIframeLoaded, which hands over the already
+// loaded iframe, so there is no ref to track and no hook left to run: the component
+// and the element are both in hand at call time.
+export function enrichWithActionLinks(
+    component,
+    targetElement,
+    selector = null,
+    isIFrame = false
+) {
+    let doc = window.document;
+    let contentDocument = targetElement;
+
+    // If we are in an iframe, we need to take the right document
+    // both for the element and the doc
+    if (isIFrame) {
+        contentDocument = targetElement.contentDocument;
+        if (!contentDocument) {
+            return;
+        }
+        doc = contentDocument;
+    }
+
+    // If there are selector, we may have multiple blocks of code to enrich
+    const targets = [];
+    if (selector) {
+        targets.push(...contentDocument.querySelectorAll(selector));
+    } else {
+        targets.push(contentDocument);
+    }
+
+    // Search the elements with the selector, update them and bind an action.
+    for (const currentTarget of targets) {
+        const elementsToWrap = currentTarget.querySelectorAll("[res-model][domain]");
+        for (const element of elementsToWrap.values()) {
+            const wrapper = doc.createElement("a");
+            wrapper.setAttribute("href", "#");
+            wrapper.addEventListener("click", (ev) => {
+                ev.preventDefault();
+                component.env.services.action.doAction({
+                    type: "ir.actions.act_window",
+                    res_model: element.getAttribute("res-model"),
+                    domain: element.getAttribute("domain"),
+                    name: toTitleCase(element.getAttribute("res-model")),
+                    views: [
+                        [false, "list"],
+                        [false, "form"],
+                    ],
+                });
+            });
+            element.parentNode.insertBefore(wrapper, element);
+            wrapper.appendChild(element);
+        }
+    }
+}
